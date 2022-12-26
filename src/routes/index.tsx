@@ -14,7 +14,7 @@ export function Routes() {
   return ( //Usando a BOX por volta da tela evita fundos brancos na passagem de uma tela a outra
     <Box flex={1} bg="gray.700"> 
       <NavigationContainer theme={theme}>
-        <AppRoutes />
+        <AuthRoutes />
       </NavigationContainer>
     </Box>
   );
