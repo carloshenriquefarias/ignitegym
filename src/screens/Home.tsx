@@ -15,9 +15,9 @@ export function Home() {
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  // function handleOpenExerciseDetails() {
-  //   navigation.navigate('exercise');
-  // }
+  function handleOpenExerciseDetails() {
+    navigation.navigate('exercise');
+  }
 
   return (    
 
@@ -42,6 +42,7 @@ export function Home() {
           }}
           my={10}
           maxH={10} //Tamanho da FlatList em altura
+          minH={10}
         />
 
         <VStack px={8}>
@@ -58,7 +59,7 @@ export function Home() {
           
           </HStack>
 
-          {/* <FlatList 
+          <FlatList 
             data={exercises}
             keyExtractor={item => item}
             renderItem={({ item }) => (
@@ -68,7 +69,7 @@ export function Home() {
             _contentContainerStyle={{
                 paddingBottom: 20
             }}
-          /> */}
+          />
 
         </VStack>
 
