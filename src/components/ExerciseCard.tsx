@@ -20,7 +20,7 @@ export function ExerciseCard({ ...rest }: Props) {
                 h={16}
                 rounded="md"
                 mr={4}
-                resizeMode="center" //Centralizar a imagem
+                resizeMode="cover" //Encaixar a imagem dentro do tamanho definido
             />
 
             <VStack flex={1}>
