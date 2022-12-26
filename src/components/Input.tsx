@@ -1,11 +1,15 @@
 import { Input as NativeBaseInput, IInputProps, FormControl } from 'native-base';
 
+type Props = IInputProps & {
+  errorMessage?: string | null;
+}
 
-export function Input({...rest }: IInputProps ) {  
+export function Input({ errorMessage = null, isInvalid, ...rest }: Props) {
+  const invalid = !!errorMessage || isInvalid;
 
-  return (
-   
-    <NativeBaseInput 
+  return ( //O uso do mb={4} aqui no form control e pra ele NAO FICAR TAO ESPAÇADO quando der erro
+    <FormControl isInvalid={invalid} mb={4}> 
+      <NativeBaseInput 
         bg="gray.700"
         h={14}
         px={4}
@@ -13,62 +17,26 @@ export function Input({...rest }: IInputProps ) {
         fontSize="md"
         color="white"
         fontFamily="body"
-        mb={4}
         placeholderTextColor="gray.300"
 
-        // isInvalid={invalid}
-        // _invalid={{
-        //   borderWidth: 1,
-        //   borderColor: "red.500"
-        // }}
-
+        isInvalid={invalid}
+        _invalid={{
+          borderWidth: 1,
+          borderColor: "red.500"
+        }}
+        
         _focus={{
           bgColor: 'gray.700',
           borderWidth: 1,
           borderColor: 'green.500'
         }}
         {...rest}
-    />      
-    
+      />
+
+      <FormControl.ErrorMessage _text={{ color: 'red.500' }}>
+        {errorMessage}
+      </FormControl.ErrorMessage>
+    </FormControl>
   );
 }
 
-// import { Input as NativeBaseInput, IInputProps, FormControl } from 'native-base';
-
-// type Props = IInputProps & {
-//   errorMessage?: string | null;
-// }
-
-// export function Input({ errorMessage = null, isInvalid, ...rest }: Props) {
-//   const invalid = !!errorMessage || isInvalid;
-
-//   return (
-//     <FormControl isInvalid={invalid} mb={4}>
-//       <NativeBaseInput 
-//         bg="gray.700"
-//         h={14}
-//         px={4}
-//         borderWidth={0}
-//         fontSize="md"
-//         color="white"
-//         fontFamily="body"
-//         placeholderTextColor="gray.300"
-//         isInvalid={invalid}
-//         _invalid={{
-//           borderWidth: 1,
-//           borderColor: "red.500"
-//         }}
-//         _focus={{
-//           bgColor: 'gray.700',
-//           borderWidth: 1,
-//           borderColor: 'green.500'
-//         }}
-//         {...rest}
-//       />
-
-//       <FormControl.ErrorMessage _text={{ color: 'red.500' }}>
-//         {errorMessage}
-//       </FormControl.ErrorMessage>
-//     </FormControl>
-//   );
-// }
