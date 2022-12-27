@@ -9,9 +9,31 @@ import BackgroundImg from '@assets/background.png';
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+import { useForm, Controller } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+type FormAcessCountProps = {  
+    email: string;
+    password: string;   
+}
+
+const signInSchema = yup.object({   
+    email: yup.string().required('Informe o e-mail').email('E-mail inválido.'),
+    password: yup.string().required('Informe a senha').min(6, 'A senha deve ter pelo menos 6 dígitos.'),   
+});
+
 export function SignIn() {
 
+    const { control, handleSubmit, formState: { errors } } = useForm<FormAcessCountProps>({
+        resolver: yupResolver(signInSchema),
+    });
+
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
+
+  function handleSignIn({ email, password}: FormAcessCountProps) {
+    console.log({ email, password })
+  }
 
   function handleNewAccount() {
     navigation.navigate('signUp');
@@ -48,6 +70,21 @@ export function SignIn() {
                     Acesse a conta
                 </Heading>
 
+                {/* <Controller 
+                    control={control}
+                    email="email"
+                    render={({ field: { onChange, value } }) => (
+                        <Input 
+                            placeholder="E-mail"
+                            onChangeText={onChange}
+                            keyboardType="email-address"
+                            autoCapitalize="none" //Deixa o teclado minusculo
+                            value={value}
+                            errorMessage={errors.email?.message}
+                        />
+                    )}
+                /> */}
+
                 <Input 
                     placeholder="E-mail" 
                     keyboardType="email-address"
@@ -59,7 +96,7 @@ export function SignIn() {
                     secureTextEntry //Deixa o password invisivel
                 />
 
-                <Button title="Acessar" />
+                <Button title="Acessar" onPress={handleSubmit(handleSignIn)}/>
             </Center>
 
             <Center mt={24}>
