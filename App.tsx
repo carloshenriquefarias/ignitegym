@@ -5,7 +5,7 @@ import { Loading } from '@components/Loading';
 
 import { Theme } from './src/theme';
 
-import {AuthContext} from '@contexts/AuthContext';
+import {AuthContext, AuthContextProvider} from '@contexts/AuthContext';
 
 import { Routes } from './src/routes';
 import { SignUp } from '@screens/SignUp';
@@ -18,29 +18,17 @@ export default function App() {
   return (
 
     <NativeBaseProvider theme={Theme}>
+
       <StatusBar
         barStyle="light-content"
         backgroundColor="transparent"
         translucent
       />
-
-      <AuthContext.Provider 
-        value={{ 
-          id: '1',
-          name: 'Carlos',
-          email: 'rike@gmail.com',
-          avatar: 'rike.png'
-
-          // user, 
-          // singIn,
-          // updateUserProfile,
-          // signOut,
-          // isLoadingUserStorageData,
-          // refreshedToken
-        }}
-      >
-        { fontsloaded ? <Routes/> : <Loading/>}
-      </AuthContext.Provider>
+      
+      <AuthContextProvider //E bom essa parte ser feita depois de construir todo o layout
+      > 
+        { fontsloaded ? <Routes/> : <Loading/>} 
+      </AuthContextProvider>
             
     </NativeBaseProvider>
   );
