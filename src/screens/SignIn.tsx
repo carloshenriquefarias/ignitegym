@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
-import { VStack, Image, Text, Center, Heading, ScrollView } from "native-base";
+import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from "native-base";
 
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
+import { useAuth } from '@hooks/useAuth';
 
 import LogoSvg from '@assets/logo.svg';
 import BackgroundImg from '@assets/background.png';
@@ -13,7 +14,9 @@ import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-type FormAcessCountProps = {  
+import { AppError } from "@utils/AppError";
+
+type FormData = {  
     email: string;
     password: string;   
 }
@@ -25,94 +28,110 @@ const signInSchema = yup.object({
 
 export function SignIn() {
 
-    const { control, handleSubmit, formState: { errors } } = useForm<FormAcessCountProps>({
+    const {singIn} = useAuth();
+    const toast = useToast();
+    const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: yupResolver(signInSchema),
     });
 
-  const navigation = useNavigation<AuthNavigatorRoutesProps>();
+    const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
-  function handleSignIn({ email, password}: FormAcessCountProps) {
-    console.log({ email, password })
-  }
+    async function handleSignIn({ email, password}: FormData) {
+        try {
+            await singIn(email, password);    
+        } catch (error) {
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível entrar agora! Tente mais tarde!'
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500',
+            })
+        }         
+    }    
 
-  function handleNewAccount() {
-    navigation.navigate('signUp');
-  }
+    function handleNewAccount() {
+        navigation.navigate('signUp');
+    }
 
-  return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+    return (
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
 
-        <VStack 
-            flex={1} 
-            px={10} pb={16}            
-        >   
+            <VStack 
+                flex={1} 
+                px={10} pb={16}            
+            >   
 
-            <Image 
-                source={BackgroundImg}
-                defaultSource={BackgroundImg} //Imagem padrao
-                alt="Pessoas treinando"
-                resizeMode="contain"
-                position="absolute"
-            />
+                <Image 
+                    source={BackgroundImg}
+                    defaultSource={BackgroundImg} //Imagem padrao
+                    alt="Pessoas treinando"
+                    resizeMode="contain"
+                    position="absolute"
+                />
 
-            <Center my={24}>
+                <Center my={24}>
 
-                <LogoSvg />
+                    <LogoSvg />
 
-                <Text color="gray.100" fontSize="sm">
-                    Treine sua mente e o seu corpo.
-                </Text>
+                    <Text color="gray.100" fontSize="sm">
+                        Treine sua mente e o seu corpo.
+                    </Text>
 
-            </Center>
+                </Center>
 
-            <Center>
-                <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
-                    Acesse a conta
-                </Heading>
+                <Center>
+                    <Heading color="gray.100" fontSize="xl" mb={6} fontFamily="heading">
+                        Acesse a conta
+                    </Heading>
 
-                {/* <Controller 
-                    control={control}
-                    email="email"
-                    render={({ field: { onChange, value } }) => (
+                    <Controller 
+                        control={control}
+                        name="email"
+                        render={({ field: { onChange, value } }) => (
                         <Input 
-                            placeholder="E-mail"
-                            onChangeText={onChange}
+                            placeholder="E-mail" 
                             keyboardType="email-address"
-                            autoCapitalize="none" //Deixa o teclado minusculo
+                            autoCapitalize="none"
+                            onChangeText={onChange}
                             value={value}
                             errorMessage={errors.email?.message}
                         />
-                    )}
-                /> */}
+                        )}
+                    />  
 
-                <Input 
-                    placeholder="E-mail" 
-                    keyboardType="email-address"
-                    autoCapitalize="none" //Deixa o teclado minusculo
+                    <Controller 
+                        control={control}
+                        name="password"
+                        render={({ field: { onChange, value } }) => (
+                        <Input 
+                            placeholder="Senha" 
+                            secureTextEntry
+                            onChangeText={onChange}
+                            value={value}
+                            errorMessage={errors.password?.message}
+                        />
+                        )}
+                    />               
 
-                />
-                <Input 
-                    placeholder="Senha" 
-                    secureTextEntry //Deixa o password invisivel
-                />
+                    <Button title="Acessar" onPress={handleSubmit(handleSignIn)}/>
+                    
+                </Center>
 
-                <Button title="Acessar" onPress={handleSubmit(handleSignIn)}/>
-            </Center>
+                <Center mt={24}>
+                    <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">
+                        Ainda não tem acesso?
+                    </Text>
 
-            <Center mt={24}>
-                <Text color="gray.100" fontSize="sm" mb={3} fontFamily="body">
-                    Ainda não tem acesso?
-                </Text>
+                    <Button 
+                        title="Criar Conta" 
+                        variant="outline"
+                        onPress={handleNewAccount}
+                    />
+                </Center>
+            </VStack>
 
-                <Button 
-                    title="Criar Conta" 
-                    variant="outline"
-                    onPress={handleNewAccount}
-                />
-            </Center>
-        </VStack>
-
-    </ScrollView>
-   
+        </ScrollView>
+    
     );
 }
