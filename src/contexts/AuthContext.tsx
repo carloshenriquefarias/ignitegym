@@ -28,7 +28,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
   // const [user, setUser] = useState({
    
   //   id: '1',
-  //   name: 'John',
+  //   name: 'Johnrerere',
   //   email: 'john@example.com',
   //   avatar: 'http://example.com',
     
