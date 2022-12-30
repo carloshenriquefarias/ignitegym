@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from "native-base";
 
 import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
@@ -27,7 +28,7 @@ const signInSchema = yup.object({
 });
 
 export function SignIn() {
-
+    const [isLoading, setIsLoading] = useState(false)
     const {singIn} = useAuth();
     const toast = useToast();
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
@@ -38,15 +39,21 @@ export function SignIn() {
 
     async function handleSignIn({ email, password}: FormData) {
         try {
-            await singIn(email, password);    
+            setIsLoading(true)
+            await singIn(email, password);   
+
         } catch (error) {
+
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível entrar agora! Tente mais tarde!'
+           
+            setIsLoading(false)
+
             toast.show({
                 title,
                 placement: 'top',
                 bgColor: 'red.500',
-            })
+            });           
         }         
     }    
 
@@ -114,7 +121,11 @@ export function SignIn() {
                         )}
                     />               
 
-                    <Button title="Acessar" onPress={handleSubmit(handleSignIn)}/>
+                    <Button 
+                        title="Acessar" 
+                        onPress={handleSubmit(handleSignIn)}
+                        isLoading={isLoading}
+                    />
                     
                 </Center>
 

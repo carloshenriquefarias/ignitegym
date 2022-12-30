@@ -11,8 +11,6 @@ export function Routes() {
 
   const {colors} = useTheme(); //Usando UseTheme podemos mudar a cor de fundo das telas
   const {user} = useAuth(); //Criação dos contextos do app 
-  
-  console.log('USUARIO LOGADO =>', user); 
 
   const theme = DefaultTheme;
   theme.colors.background = colors.gray[700];
@@ -21,7 +19,7 @@ export function Routes() {
      //Usando a BOX por volta da tela evita fundos brancos na passagem de uma tela a outra
     <Box flex={1} bg="gray.700"> 
       <NavigationContainer theme={theme}>
-        <AuthRoutes />
+        {user.id ? <AppRoutes/> : <AuthRoutes/>}
       </NavigationContainer>
     </Box>
   );
