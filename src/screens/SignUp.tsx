@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useNavigation } from "@react-navigation/native";
 import { VStack, Image, Text, Center, Heading, ScrollView, useToast } from "native-base";
 
@@ -16,6 +18,9 @@ import { AppError } from "@utils/AppError";
 import { api } from "@services/api";
 import  axios  from 'axios';
 import { ControlledPropUpdatedSelectedItem } from "native-base/lib/typescript/components/composites/Typeahead/useTypeahead/types";
+import { useAuth } from "@hooks/useAuth";
+
+
 
 type FormDataProps = {
   name: string;
@@ -32,6 +37,9 @@ const signUpSchema = yup.object({
 });
 
 export function SignUp() {  
+
+  const [isLoading, setIsLoading] = useState(false);
+  const {singIn} = useAuth();
   
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema),
@@ -48,12 +56,13 @@ export function SignUp() {
   async function handleSignUp({ name, email, password }: FormDataProps) {
 
     try {
-      // setIsLoading(true)
+      setIsLoading(true)
 
       await api.post('/users', { name, email, password });
-      // await singIn(email, password)
+      await singIn(email, password)
+
     } catch (error) {
-      // setIsLoading(false);
+      setIsLoading(false);
 
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde';
@@ -153,7 +162,8 @@ export function SignUp() {
 
           <Button 
             title="Criar e acessar" 
-            onPress={handleSubmit(handleSignUp)}            
+            onPress={handleSubmit(handleSignUp)}  
+            isLoading={isLoading}          
           />
         </Center>
         
