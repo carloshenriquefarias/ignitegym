@@ -9,10 +9,10 @@ import { UserDTO } from "@dtos/UserDTO";
 export type AuthContextDataProps = {
   user: UserDTO;
   singIn: (email: string, password: string) => Promise<void>;
-//   updateUserProfile: (userUpdated: UserDTO) => Promise<void>;
+  //   updateUserProfile: (userUpdated: UserDTO) => Promise<void>;
   signOut: () => Promise<void>;
   isLoadingUserStorageData: boolean;
-//   refreshedToken: string;
+  //   refreshedToken: string;
 }
 
 type AuthContextProviderProps = { 
@@ -109,10 +109,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
         userAndTokenUpdate(userLogged, token);
       }
 
-    }catch (error) {
+    } catch (error) {
       throw error
 
-    }finally {
+    } finally {
       setIsLoadingUserStorageData(false);
     }
   }

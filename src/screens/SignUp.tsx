@@ -20,8 +20,6 @@ import  axios  from 'axios';
 import { ControlledPropUpdatedSelectedItem } from "native-base/lib/typescript/components/composites/Typeahead/useTypeahead/types";
 import { useAuth } from "@hooks/useAuth";
 
-
-
 type FormDataProps = {
   name: string;
   email: string;
