@@ -13,7 +13,7 @@ import { Profile } from '@screens/Profile';
 
 type AppRoutes = {
   home: undefined;
-  exercise: undefined;
+  exercise: {exerciseId: string}; //Definir assim para mostrar o exercicio certo
   profile: undefined;
   history: undefined;
 }
