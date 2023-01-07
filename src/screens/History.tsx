@@ -35,6 +35,7 @@ export function History() {
       const response = await api.get('/history');
 
       setExercises(response.data);
+      // console.log(response.data);
 
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -48,7 +49,7 @@ export function History() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }  
 
   useFocusEffect(
     useCallback(() => {
@@ -68,7 +69,9 @@ export function History() {
           sections={exercises}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <HistoryCard />
+            <HistoryCard 
+              data={item}
+            />
           )}
 
           renderSectionHeader={({ section }) => (

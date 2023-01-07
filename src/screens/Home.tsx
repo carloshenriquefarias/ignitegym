@@ -24,7 +24,8 @@ export function Home() {
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  function handleOpenExerciseDetails(exerciseId: string) { //Pegando o exercicio pelo ID
+  function handleOpenExerciseDetails(exerciseId: string) { 
+    //Pegando o exercicio pelo ID
     navigation.navigate('exercise', {exerciseId});
   }  
 

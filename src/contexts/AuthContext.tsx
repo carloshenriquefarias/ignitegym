@@ -9,7 +9,7 @@ import { UserDTO } from "@dtos/UserDTO";
 export type AuthContextDataProps = {
   user: UserDTO;
   singIn: (email: string, password: string) => Promise<void>;
-  //   updateUserProfile: (userUpdated: UserDTO) => Promise<void>;
+  updateUserProfile: (userUpdated: UserDTO) => Promise<void>; //Atualiza dados do usuario L87
   signOut: () => Promise<void>;
   isLoadingUserStorageData: boolean;
   //   refreshedToken: string;
@@ -84,14 +84,14 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
     }
   }
 
-  // async function updateUserProfile(userUpdated: UserDTO) {
-  //     try {
-  //     setUser(userUpdated);
-  //     await storageUserSave(userUpdated);
-  //     } catch (error) {
-  //     throw error;
-  //     }
-  // }
+  async function updateUserProfile(userUpdated: UserDTO) { //Atualizar os dados do usario la da pagina PROFILE
+      try {
+      setUser(userUpdated);
+      await storageUserSave(userUpdated);
+      } catch (error) {
+      throw error;
+      }
+  }
 
   async function loadUserData() {
 
@@ -138,7 +138,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps)  {
       value={{ //Pega essa parte e leva la pra dentro do App.tsx
         user,             
         singIn,
-        // updateUserProfile,
+        updateUserProfile,
         signOut,
         isLoadingUserStorageData,
         // refreshedToken
