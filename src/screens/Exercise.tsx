@@ -28,11 +28,13 @@ export function Exercise() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [sendingRegister, setSendingRegister] = useState(false);
-  const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);
-  const toast = useToast()
+  const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);  
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
+
   const route = useRoute()
+  const toast = useToast()
+
   const { exerciseId } = route.params as RouteParamsProps;
 
   function handleGoBack() {
@@ -43,8 +45,8 @@ export function Exercise() {
     try {
       setIsLoading(true);
       const response = await api.get(`/exercises/${exerciseId}`);
-      // console.log(response.data); //Checar pra ver se ta trazendo os dados
-      setExercise(response.data);
+      console.log(response.data); //Checar pra ver se ta trazendo os dados
+      // setExercise(response.data);
 
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -61,7 +63,7 @@ export function Exercise() {
     }
   }
 
-  async function handleExerciseHistoryRegister() {
+  async function handleExerciseHistoryRegister() { //Registra os exercicios feitos no historico
     try {
       setSendingRegister(true);
       
