@@ -31,10 +31,10 @@ export function Exercise() {
   const [exercise, setExercise] = useState<ExerciseDTO>({} as ExerciseDTO);  
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
-
-  const route = useRoute()
+ 
   const toast = useToast()
 
+  const route = useRoute()
   const { exerciseId } = route.params as RouteParamsProps;
 
   function handleGoBack() {
