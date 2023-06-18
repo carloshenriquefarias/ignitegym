@@ -127,6 +127,7 @@ export function Profile() {
         placement: 'top',
         bgColor: 'green.500'
       });
+      
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possível atualizar os dados. Tente novamente mais tarde.';
